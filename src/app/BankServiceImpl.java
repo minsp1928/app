@@ -164,6 +164,7 @@ public class BankServiceImpl implements BankService{
 	}//관리자정보 가져오기 끝
 
 	@Override
+	//깃허브테스트
 	public int Balance() {//잔액확인 메서드?
 		Scanner sc = new Scanner(System.in);
 		User user = new User();
