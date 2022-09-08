@@ -29,26 +29,27 @@ public class BankApp {
 		
 		while(run1) {
 			System.out.println("| 1: 로그인 | 2:회원가입 | 3: 관리자로그인");//할 수 있으면 아이디 비밀번호 찾기
-			
-			int selectNo=sc.nextInt();//입력받은 값 //try에 넣으면 무한 반복
-			
-			try {
-				if(selectNo == 1) {//로그인
+				char selectNo;
+			try {//if만 쓰면 다 돈다 -> else if로 전환
+				 selectNo=sc.next().charAt(0);//입력받은 값 //try에 넣으면 무한 반복
+				if((int)selectNo == 49 ) {//로그인
 					bs.idpwCheck();
 					break;
-				}if(selectNo ==2) { //회원가입
+				}else if((int)selectNo == 50) { //회원가입
 					bs.join();
 		    
-				}if(selectNo ==3) { //관리자로그인
+				}else if((int)selectNo == 51) { //관리자로그인
 					bs.adminLogin();
 					break;
 		    
 				}else {
 					System.out.println("원하시는 메뉴의 숫자를 입력해주세요.");
+					System.out.println((int)selectNo);
 				}
 			} catch (InputMismatchException e) { // 작동안함 why
-				e.printStackTrace();
+				
 				System.out.println("원하시는 메뉴의 숫자만 입력해주세요.");
+
 			}
 	
 		}//run1 끝
@@ -78,10 +79,12 @@ public class BankApp {
 				default:
 					System.out.println("화면의 숫자만 입력해주세요.");
 				}
-	}
-				
+		}//run2 끝
 			
-	
-	
+
+	}//end of main
+	public char run1(char selectNo) {
+		
+		return selectNo;
 	}
-}//end of main
+}//end of BankApp

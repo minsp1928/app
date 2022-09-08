@@ -10,9 +10,7 @@ import java.util.Random;
 
 public class Ex14 extends Frame implements Runnable{
 	//랜덤,공튕기기
-	
-	//런에이블에서 생성
-	
+
 	int x = 0; //시작하는 좌표를 설정
 	int y = 20;//사각형 사이즈가20이므로 아래로 내려와야 함.
 	boolean xOrient, yOrient; //false로 자동초기화
