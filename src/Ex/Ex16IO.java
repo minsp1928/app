@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 public class Ex16IO {
 	public static void main(String[] args) throws IOException {
 			//InputStream, OutputStream
-		File file = new File("D:/work/IO.txt");
+		File file = new File("D:/work/IO.txt");//파일다일로그를 띄우면 폴더 및 파일 선택을 하면 파일을 만들 수 있음
 		//출력할때 파일이 없으면 에러/ 입력할때 파일이 있으면 만들어짐
 		//출력목적: 파일에다가 시스템을 통해서 문자데이터를 파일에 저장하기
 		//*문제가 왔을때 요리라고 생각하자. = 재료들을 준비, 필요한 공정을 순서대로 : 알고리즘
@@ -30,7 +30,7 @@ public class Ex16IO {
 		String str ="";
 		while(!str.equals("end")) { //end를 치면 반복중단, 파일로 저장d
 			str = br.readLine();
-			pw.println(str);
+			pw.println(str);//여기서 파일이 저장되는것
 		}
 		br.close();
 		pw.close();
