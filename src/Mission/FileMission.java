@@ -1,5 +1,6 @@
 package Mission;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -16,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-class FileMission implements ActionListener{
+class FileMission extends JFrame implements ActionListener{
 	
 	
 	public void FileMission() throws IOException {
@@ -50,6 +51,11 @@ class FileMission implements ActionListener{
 	public static void main(String[] args) throws IOException {
 		
 		new FileMission();
+		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
