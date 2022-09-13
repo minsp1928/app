@@ -3,14 +3,22 @@ package Mission;
 import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.Menu;
+import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
 public class Ex18 extends Frame implements ActionListener{
@@ -27,28 +35,37 @@ public class Ex18 extends Frame implements ActionListener{
 		ta = new TextArea();
 		ta.setEditable(false);//처음에 텍스트아리아 사용못하게 선언
 		fd_load = new FileDialog(this, "파일 열기", FileDialog.LOAD);
-		fd_save = new FileDialog(this, "파일 wjwkd", FileDialog.SAVE);
+		fd_save = new FileDialog(this, "파일 저장", FileDialog.SAVE);
 		mb = new MenuBar();
 		m = new Menu("File");
 		mi = new MenuItem[5];
-		mi[0] = new JMenuItem("New File");
-		mi[1] = new JMenuItem("Open File");
-		mi[2] = new JMenuItem("Save File");
-		mi[3] = new JMenuItem("Save As");
-		mi[4] = new JMenuItem("Exit");
+		mi[0] = new MenuItem("New File");
+		mi[1] = new MenuItem("Open File");
+		mi[2] = new MenuItem("Save File");
+		mi[3] = new MenuItem("Save As");
+		mi[4] = new MenuItem("Exit");
 		for(int i = 0; i<mi.length; i++) {
 			m.add(mi[i]);
 			mi[i].addActionListener(this);
 			if( i != 2 && i != (mi.length - 1))//마지막 줄 안적을라구
 				m.addSeparator();//구분선
 		}
-		mi[i].setEnabled(false);
-		md.add(m);
+		mi[1].setEnabled(false);
+		mb.add(m);
 		setMenuBar(mb);
 		add(ta,"Center");
 		setSize(500, 500);
 		setVisible(true);
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+				
+			}	
+		});
 	}
+
+	
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if(obj.equals(mi[4])) {
@@ -56,6 +73,7 @@ public class Ex18 extends Frame implements ActionListener{
 		}else if (obj == mi[0]) {
 			mi[1].setEnabled(true);
 			ta.setEditable(true);
+			ta.setText("");//textarea 비우기
 		}else if (obj == mi[1]) {
 			//Open File
 			fd_load.setVisible(true);
@@ -69,18 +87,65 @@ public class Ex18 extends Frame implements ActionListener{
 				File file = new File(fd_load.getDirectory()
 									+fd_load.getFile());//파일경로:파일주소/파일이름
 				fr = new FileReader(file);
-				br.
-			} catch (Exception e2) {
-				// TODO: handle exception
+				br = new BufferedReader(fr);
+				while(br.ready()) {
+					ta.append(br.readLine() + "\n");
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}finally {
+				try {
+					br.close();
+					fr.close();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		}else if (obj == mi[2]) {
+			//Save File
+			BufferedWriter bw = null;
+			try {
+				bw = new BufferedWriter(new FileWriter(
+									new File("C:/IO/menu.txt")));
+				bw.write(ta.getText());
+				bw.flush();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}finally {
+				try {
+					bw.close();
+				}catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}else if ( obj == mi[3]) {
+//			Save As
+//			fd_save.setVisible(true);
+//			fd_save.getDirectory();
+//			fd_save.getFile();
+			fd_save.setVisible(true);
+			BufferedWriter bw = null;
+			try {
+				bw = new BufferedWriter(
+						new FileWriter(new File(fd_save.getDirectory()
+								+fd_save.getFile())));
+				bw.write(ta.getText());
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}finally {
+				try {
+					bw.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
-		
 	}
 	
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		new Ex18();
 	}
 
 }
