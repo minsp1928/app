@@ -27,14 +27,15 @@ public class EchoServer {
 		//사용자가 접근할 때(연결할때, 소켓이 연결될때 io 내려감, = 근데 이 예제는 한명만 가능
 		//ip와 포트정보를 알아야 서버를 들어갈 수 있다. 
 		//서버 소켓에는 accept란 메소드 : 통신할 수 있는 도구를 만드는것.
-		//클라이언트가 서버의 아이피를 알고 접근 시도, accept를 통해 소켓을 반환하는것
+		//클라이언트가 서버의 아이피를 알고 접근 시도, accept를 통해 통신할 수 있는 소켓을 반환하는것
 		//접속된 소켓들을 어딘가에 담아두면 브로드캐스트가 가능하다.
 		InputStream is = client.getInputStream();//문자데이터를 사용할건데 바이트임
 		OutputStream os = client.getOutputStream();//소켓을 통해서 바이트를 입출력을 받는 인스턴스는 알아야
 		InputStreamReader isr = new InputStreamReader(is);//여기서 문자로 받아
-		BufferedReader in = new BufferedReader(isr);//
+		BufferedReader in = new BufferedReader(isr);//필터스트림으로 변환을 시켜주는것?
 		PrintWriter out = new PrintWriter(os, true);
 	//	BufferedReader con = new BufferedReader(new InputStreamReader(System.in)); 필요없는 이유 : 서버는 그냥 요청만
+		//(양쪽으로 하고싶다면 순환 배치가 반대로 되게?출입구/입출구
 		while(true) {//데이터 주고받기 ( 메아리식으로 클라이언트만 말하는것)
 			String msg = in.readLine(); 
 			System.out.println(msg); //서버콘솔에 넣음
@@ -45,7 +46,7 @@ public class EchoServer {
 		}
 	}//end of service
 	public void close() throws IOException {
-		server.close();
+		server.close();//꼭 해줄것
 		
 	}//end of close
 	public static void main(String[] args) {

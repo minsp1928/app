@@ -1,22 +1,48 @@
 package app;
 
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class BankApp {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+public class BankApp extends JFrame implements ActionListener {
+	JButton login, join, adminLogin;
 	static BankService bs = new BankServiceImpl();
 	//인터페이스는 객체생성불가 , 인터페이스를 임플리먼트로 객체를 선언
-
+	
 //	static User[] users; //정적으로 선언 기준점
 	
 	static List <User> arr = new ArrayList<>();
 	/*public BankApp() {
 		users = new User[2];//저장을 영속}
 	}*/
-
+	public BankApp() {
+		super("으냉은행");
+		login = new JButton("login");
+		join = new JButton("join");
+		adminLogin = new JButton("adminLogin");
+		
+		Panel p = new Panel();
+		p.add(login);
+		p.add(join);
+		p.add(adminLogin);
+		
+		this.add(p, "Center");
+		this.setSize(300,100);
+		this.setResizable(false);
+		this.setVisible(true);
+		this.addWindowListener(new WindowAdapter() {
+		});
+		login.addActionListener(this);
+	}
 	public static void main(String[] args) {
 		// main 여기서 실행(spring boot로 치자면 controller)
 		AccountNumber anum = new AccountNumber();//계좌정보
@@ -86,5 +112,10 @@ public class BankApp {
 	public char run1(char selectNo) {
 		
 		return selectNo;
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }//end of BankApp
