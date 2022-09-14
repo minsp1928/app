@@ -16,12 +16,13 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class BankServiceImpl implements BankService{
-		
+	static Map<Integer, Object> arrMap = new HashMap<Integer, Object>();	
 	//	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	//	int balance = 20000;//잔고
 	//	int accountNum; //계좌번호를 넣을 변수? 배열?  	
 		//User user = new User(); -> 여기서만 하면 여기서만 사용됨 놉!
 	private static int index = 0;
+
 
 	
 	@Override
@@ -60,10 +61,15 @@ public class BankServiceImpl implements BankService{
 	
 	@Override
 	public int join() {//회원가입
+		
+
 		Scanner sc = new Scanner(System.in);
 		Calendar cal = Calendar.getInstance();
 		String year = Integer.toString(cal.get(Calendar.YEAR)); 
-		String mon  = Integer.toString((cal.get(Calendar.MONTH)))+1;
+		String mon  = Integer.toString((cal.get(Calendar.MONTH)+1));
+		if (cal.get(Calendar.MONTH)+1 < 10) {
+			mon = 0+ Integer.toString((cal.get(Calendar.MONTH)+1));		
+		}
 		String date = Integer.toString(cal.get(Calendar.DATE));
 		
 		int accountNum = 0;
@@ -110,10 +116,13 @@ public class BankServiceImpl implements BankService{
 	index++; 배열로 했다면 인덱스를 1씩 늘려주는 시퀀스를 이용해야함*/
 			
 		accountNum = (int) ((Math.random()*999999)+1);//랜덤으로 돌리지만 리스트 중복체크필요
-		String joinadte = year+mon+date; 
+		String joinadte = year+mon+ date; 
 		BankApp.arr.add(new User(accountNum,name,id,pw,balance,joinadte));
 		System.out.println(name+"님 가입을 환영합니다! | 가입일 : "+joinadte);
 		System.out.println(name+"님의 계좌번호는 "+accountNum+"입니다.");
+		for(int i = 0; i<BankApp.arr.size(); i++) {
+			arrMap.put(i, BankApp.arr);//유저 정보가 담긴 객체를 list에 넣고 또 map에 넣음.
+		}
 
 		 return 1;
 		
@@ -163,58 +172,34 @@ public class BankServiceImpl implements BankService{
 		
 	}//관리자정보 가져오기 끝
 
-	@Override
-	//깃허브테스트
-	public int Balance() {//잔액확인 메서드?
-		Scanner sc = new Scanner(System.in);
-		User user = new User();
-		System.out.println("계좌번호를 입력해 주세요 : ");
-		int accountNumber = sc.nextInt();
-		
-		for(int i=0; i<BankApp.arr.size(); i++) {
-			if(accountNumber == BankApp.arr.get(i).getAccountNum()) {
-			
-				int balance = BankApp.arr.get(i).getBalance();
-				System.out.println(BankApp.arr.get(i).getName()+"님의 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
-				System.out.println(BankApp.arr.get(i)+"님의 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
-	
-				
-			}else {
-				System.out.println("계좌번호를 정확히 입력해주세요.");
-			}
-		
-		}
-		return 0;
-	}//잔액확인 메서드 끝-----
-	
+
 	@Override
 	public boolean deposit() {//예금
 		Scanner sc = new Scanner(System.in);
 		User user = new User();
 		System.out.println("계좌번호를 입력해 주세요 : ");
 		int accountNumber = sc.nextInt();
+		System.out.println("accountNumber : "+accountNumber);
 		
 		for(int i=0; i<BankApp.arr.size(); i++) {
-			if(accountNumber == BankApp.arr.get(i).getAccountNum()) {
-				
-				
+			int accountNumberchk = BankApp.arr.get(i).getAccountNum();
+			if(accountNumber == accountNumberchk) {
+				System.out.println("accountNumberchk : "+accountNumberchk);			
 				System.out.print("입금할 금액 입력 : ");
 				int balance = BankApp.arr.get(i).getBalance();
-				int deposit = sc.nextInt();
+				int deposit = sc.nextInt();		
 				balance += deposit;
 				user.setBalance(balance);
-				BankApp.arr.add(i,user);
-				
-				if (deposit>=0) {
+				BankApp.arr.get(i).setBalance(balance);
+
+				if (deposit>0) {
 							System.out.println(deposit+"원이 입금되었습니다. 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
 			
 							return true;
 						}else {
 							System.out.println("1원 이상의 금액을 입력해주세요.");
-
-						}
-			
-			}else {
+						}		
+			}else if(accountNumber != accountNumberchk){
 				System.out.println("계좌번호를 정확히 입력해주세요.");
 			}
 		
@@ -239,7 +224,7 @@ public class BankServiceImpl implements BankService{
 				int withdraw = sc.nextInt();
 				balance -= withdraw;
 				user.setBalance(balance);
-				BankApp.arr.add(i,user);
+				BankApp.arr.set(i,user);
 				
 				if (balance>=withdraw) {
 							System.out.println(withdraw+"원이 출금되었습니다. 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
@@ -259,7 +244,34 @@ public class BankServiceImpl implements BankService{
 		return true;
 
 	}//출금 끝
-
+	@Override
+	//깃허브테스트
+	public int Balance() {//잔액확인 메서드?
+		Scanner sc = new Scanner(System.in);
+		User user = new User();
+		System.out.println("계좌번호를 입력해 주세요 : ");
+		int accountNumber = sc.nextInt();
+		System.out.println("accountNumber : "+accountNumber);
+		
+		for(int i=0; i<BankApp.arr.size(); i++) {
+			
+			System.out.println("getAccountNum : "+BankApp.arr.get(i).getAccountNum());
+			int accountNumberChk = BankApp.arr.get(i).getAccountNum();
+			
+			if(accountNumber == accountNumberChk) {
+				System.out.println("getAccountNum : "+accountNumberChk);
+				int balance = BankApp.arr.get(i).getBalance();
+				System.out.println(BankApp.arr.get(i).getName()+"님의 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
+				System.out.println(BankApp.arr.get(i)+"님의 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
+	
+				
+			}else {
+				System.out.println("계좌번호를 정확히 입력해주세요.");
+			}
+		
+		}
+		return 0;
+	}//잔액확인 메서드 끝-----
 	@Override
 	public void allAccount() {//전체계좌목록 조회
 		//관리자 아이디일때 조회, 삭제 가능
@@ -271,7 +283,8 @@ public class BankServiceImpl implements BankService{
 		for(int i = 0; i<BankApp.arr.size(); i++) {
 			System.out.println("이름 : "+BankApp.arr.get(i).getName()
 								+"\t계좌번호 : "+BankApp.arr.get(i).getAccountNum()
-								+"\t가입일   :"+BankApp.arr.get(i).getJoinadte());
+								+"\t잔   액 :"+BankApp.arr.get(i).getBalance()
+								+"\t가입일  :"+BankApp.arr.get(i).getJoinadte());
 		}
 		
 	}

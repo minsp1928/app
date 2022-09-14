@@ -5,8 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -20,7 +23,9 @@ public class BankApp extends JFrame implements ActionListener {
 	
 //	static User[] users; //정적으로 선언 기준점
 	
-	static List <User> arr = new ArrayList<>();
+	static List <User> arr = new LinkedList();
+	
+	
 	/*public BankApp() {
 		users = new User[2];//저장을 영속}
 	}*/
@@ -49,6 +54,7 @@ public class BankApp extends JFrame implements ActionListener {
 		int accountNum; //계좌번호를 넣을 변수? 배열?  
 		Scanner sc = new Scanner(System.in);
 			
+
 
 		boolean run1 = true; //질문하는 반복문 (로그인 화면)
 		boolean run2 = true; //질문하는 반복문  (로그인 후 메뉴화면)
