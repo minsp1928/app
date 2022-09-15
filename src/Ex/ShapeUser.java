@@ -1,4 +1,4 @@
-package app;
+package Ex;
 
 public class ShapeUser {
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package app;
+package Ex;
 
 public class Rect extends Shape {//is-a 관계
 	protected int width, height;

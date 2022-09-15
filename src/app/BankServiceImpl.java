@@ -15,6 +15,8 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
+import Ex.User;
+
 public class BankServiceImpl implements BankService{
 	static Map<Integer, Object> arrMap = new HashMap<Integer, Object>();	
 	//	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -60,9 +62,8 @@ public class BankServiceImpl implements BankService{
 	}//로그인 체크 끝-----------------------------
 	
 	@Override
-	public int join() {//회원가입
+	public int join() throws initDepositAmountException {//회원가입
 		
-
 		Scanner sc = new Scanner(System.in);
 		Calendar cal = Calendar.getInstance();
 		String year = Integer.toString(cal.get(Calendar.YEAR)); 
@@ -94,23 +95,39 @@ public class BankServiceImpl implements BankService{
 				}
 			}
 			*/
-			System.out.print("비밀번호 :");
-			pw = sc.next();
-			System.out.print("비밀번호 재확인 :");
-			String pwChk = sc.next();
-			if(pw.equals(pwChk)) {
-				System.out.println("비밀번호 확인.");
-			}else {
-				System.out.println("비밀번호가 다릅니다.");
-			}
 		
-
+			boolean check = true;
+			while(check) {
+				System.out.print("비밀번호 :");
+				pw = sc.next();
+				System.out.print("비밀번호 재확인 :");
+				String pwChk = sc.next();
+				if(pw.equals(pwChk)) {
+					System.out.println("비밀번호 확인.");
+					break;
+				}else {
+					System.out.println("비밀번호가 다릅니다.");
+				}
+			}
+	
 			System.out.print("초기입금액 : ");
-			balance = sc.nextInt();
-			if(balance>0) {
-				System.out.println(balance+"원이 입금되었습니다.");
-			}else{
-				System.out.println("0이상의 금액을 입력해 주세요");
+			try {
+				balance = 0;
+				balance = sc.nextInt();
+				
+			} catch (Exception e) {
+				if(balance>0) {
+					System.out.println(balance+"원이 입금되었습니다.");
+				}else if(balance<=0){
+					try {
+						throw new initDepositAmountException(
+								"0이상의 금액을 입력해 주세요");
+					} catch (Exception e2) {
+						System.out.println(e2.getMessage());
+						return 1;
+					}				
+				}
+			//	return 0;
 			}
 	/*accounts[index] = new Account(accountNumber, password, name, balance);
 	index++; 배열로 했다면 인덱스를 1씩 늘려주는 시퀀스를 이용해야함*/
@@ -124,7 +141,7 @@ public class BankServiceImpl implements BankService{
 			arrMap.put(i, BankApp.arr);//유저 정보가 담긴 객체를 list에 넣고 또 map에 넣음.
 		}
 
-		 return 1;
+		 return 0;
 		
 	}//회원가입 끝 -------------
 	
@@ -224,7 +241,7 @@ public class BankServiceImpl implements BankService{
 				int withdraw = sc.nextInt();
 				balance -= withdraw;
 				user.setBalance(balance);
-				BankApp.arr.set(i,user);
+				BankApp.arr.get(i).setBalance(balance);
 				
 				if (balance>=withdraw) {
 							System.out.println(withdraw+"원이 출금되었습니다. 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
@@ -251,21 +268,16 @@ public class BankServiceImpl implements BankService{
 		User user = new User();
 		System.out.println("계좌번호를 입력해 주세요 : ");
 		int accountNumber = sc.nextInt();
-		System.out.println("accountNumber : "+accountNumber);
+		System.out.println("입력한 accountNumber  : "+accountNumber);
 		
 		for(int i=0; i<BankApp.arr.size(); i++) {
-			
-			System.out.println("getAccountNum : "+BankApp.arr.get(i).getAccountNum());
-			int accountNumberChk = BankApp.arr.get(i).getAccountNum();
-			
+			int accountNumberChk = BankApp.arr.get(i).getAccountNum();		
 			if(accountNumber == accountNumberChk) {
-				System.out.println("getAccountNum : "+accountNumberChk);
+				System.out.println("확인용 getAccountNum : "+accountNumberChk);
 				int balance = BankApp.arr.get(i).getBalance();
 				System.out.println(BankApp.arr.get(i).getName()+"님의 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
-				System.out.println(BankApp.arr.get(i)+"님의 잔액은 "+BankApp.arr.get(i).getBalance()+"원 입니다.");
-	
-				
-			}else {
+
+			}else if(accountNumber != accountNumberChk){
 				System.out.println("계좌번호를 정확히 입력해주세요.");
 			}
 		

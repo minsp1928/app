@@ -6,7 +6,7 @@ import java.util.List;
 public interface BankService {
 //	boolean deposit(User cust, long input); //입금
 	void idpwCheck();//로그인 아이디,비번확인
-	int join();//회원가입
+	int join() throws initDepositAmountException;//회원가입
 	void adminLogin(); //관리자 로그인
 	int Balance();//잔액
 	boolean deposit(); //입금

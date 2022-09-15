@@ -1,4 +1,4 @@
-package app;
+package Ex;
 
 public class Circle extends Shape {//is-a 관계
 	protected int r;

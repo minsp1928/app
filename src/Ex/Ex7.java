@@ -1,8 +1,10 @@
-package app;
+package Ex;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import app.BankApp;
 
 public class Ex7 {
 
@@ -13,7 +15,7 @@ public class Ex7 {
 		int kors[] = {30, 20, 100};
 		int engs[] = {100, 70 ,100};
 		int maths[] = {20, 50, 100};
-		User user = BankApp.arr.get(0);
+		User user = Ex.BankApp.arr.get(0);
 		user.getAccountNum();//0번째의 객체정보만 가져올 수 있다.
 		List arr = new ArrayList(); // 용량을 주어줄 수 있지만 기본적으로 10개의 공간을 생성. 이후 그냥 추가됨. 다양하게 생성할 수 있도록..?
 		for (int i =0; i<names.length; i ++) {

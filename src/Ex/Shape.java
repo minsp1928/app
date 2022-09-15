@@ -1,4 +1,4 @@
-package app;
+package Ex;
 
 public abstract class Shape { //모호한 개념의 추상클래스
 	protected int x, y;

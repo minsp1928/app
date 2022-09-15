@@ -1,4 +1,4 @@
-package app;
+package Ex;
 
  class X {  //할머니
 	 	protected int i =10;
