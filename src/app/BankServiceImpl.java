@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -133,13 +135,22 @@ public class BankServiceImpl implements BankService{
 	index++; 배열로 했다면 인덱스를 1씩 늘려주는 시퀀스를 이용해야함*/
 			
 		accountNum = (int) ((Math.random()*999999)+1);//랜덤으로 돌리지만 리스트 중복체크필요
-		String joinadte = year+mon+ date; 
-		BankApp.arr.add(new User(accountNum,name,id,pw,balance,joinadte));
-		System.out.println(name+"님 가입을 환영합니다! | 가입일 : "+joinadte);
-		System.out.println(name+"님의 계좌번호는 "+accountNum+"입니다.");
-		for(int i = 0; i<BankApp.arr.size(); i++) {
-			arrMap.put(i, BankApp.arr);//유저 정보가 담긴 객체를 list에 넣고 또 map에 넣음.
+		String joinadteStr = year+"-"+mon+"-"+date; 
+		SimpleDateFormat fomatter = new SimpleDateFormat("yyyy-mm-dd");
+		Date joinadte;
+		try {
+			joinadte = fomatter.parse(joinadteStr);
+			BankApp.arr.add(new User(accountNum,name,id,pw,balance,joinadte));
+			System.out.println(name+"님 가입을 환영합니다! | 가입일 : "+joinadteStr);
+			System.out.println(name+"님의 계좌번호는 "+accountNum+"입니다.");
+			for(int i = 0; i<BankApp.arr.size(); i++) {
+				arrMap.put(i, BankApp.arr);//유저 정보가 담긴 객체를 list에 넣고 또 map에 넣음.
+			}
+		} catch (ParseException e) {
+			System.out.println("회원가입 e.getMessage()->"+e.getMessage());
+			e.printStackTrace();
 		}
+		
 
 		 return 0;
 		
@@ -286,19 +297,42 @@ public class BankServiceImpl implements BankService{
 	}//잔액확인 메서드 끝-----
 	@Override
 	public void allAccount() {//전체계좌목록 조회
-		//관리자 아이디일때 조회, 삭제 가능
 		//일반 아이디일때 조회 가능
 		//if(BankApp.arr.)
 		System.out.println("-----------");
 		System.out.println("계좌목록");
 		System.out.println("-----------");	
-		for(int i = 0; i<BankApp.arr.size(); i++) {
-			System.out.println("이름 : "+BankApp.arr.get(i).getName()
-								+"\t계좌번호 : "+BankApp.arr.get(i).getAccountNum()
-								+"\t잔   액 :"+BankApp.arr.get(i).getBalance()
-								+"\t가입일  :"+BankApp.arr.get(i).getJoinadte());
+		if(BankApp.arr.size()>0) {
+			for(int i = 0; i<BankApp.arr.size(); i++) {
+				System.out.println("이름 : "+BankApp.arr.get(i).getName()
+									+"\t계좌번호 : "+BankApp.arr.get(i).getAccountNum()
+									+"\t가입일  :"+BankApp.arr.get(i).getJoinadte());
+			}
+		}else {
+			System.out.println("계좌목록이 없습니다.");
 		}
+	
 		
+	}
+
+	@Override
+	public void allUserAdmin() {//사용자정보목록 조회
+		//관리자 아이디일때 조회, 삭제 가능	
+		System.out.println("-----------");
+		System.out.println("사용자 목록");
+		System.out.println("-----------");
+		if(BankApp.arr.size()>0) {
+			for(int i = 0; i<BankApp.arr.size(); i++) {
+				System.out.println("[ 이름 : "+BankApp.arr.get(i).getName()
+									+"\t아이디  : "+BankApp.arr.get(i).getId()
+									+"\t계좌번호 : "+BankApp.arr.get(i).getAccountNum()
+									+"\t잔   액 :"+BankApp.arr.get(i).getBalance()
+									+"\t가입일  :"+BankApp.arr.get(i).getJoinadte()+"] ");
+			}
+		}else {
+			System.out.println("사용자가 없습니다.");
+		}
+	
 	}
 
 	

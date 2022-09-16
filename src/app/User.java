@@ -1,7 +1,7 @@
 package app;
 
 import java.util.Date;
-//어노테이션을 사용하지 않는것일까?
+//어노테이션을 사용하지 않는것일까?06
 public class User {
 	//private으로 필드를..?
 //은행-> 유저정보 어떤게 필요한가
@@ -10,7 +10,8 @@ public class User {
 	private String id;		//유저 아이디 ->pk로 가야할듯 길이 유효성검사
 	private String pw;		//유저 비밀번호->길이, 영문, 숫자, 문자 가능하게?
 	private int balance;
-	private String joinadte;      //유저의 가입일
+	private Date joinadte;      //유저의 가입일
+	private int grade;    //등급 0 기본, 1:실버 십만원, 2 :골드 백만, 3:플레티넘 천만
 //	private int tel;		//유저 전화번호
 //	private Date birthday;	//유저 생일 만약 이벤트를 넣는 다면 있는게 좋겠지 그러면 마일리지같은게 들어가야할까
 	
@@ -32,10 +33,20 @@ public class User {
 		this.pw = pw;
 	//	this.tel = tel;
 	//	this.birthday = birthday;
+		this.joinadte = joinadte;
 		this.balance = balance;
+		this.grade = grade;
 	}
 
-	public User(int accountNum, String name, String id, String pw, int balance, String joinadte) {
+	public int getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+
+	public User(int accountNum, String name, String id, String pw, int balance, Date joinadte) {
 		super();
 		this.accountNum = accountNum;
 		this.name = name;
@@ -86,25 +97,6 @@ public class User {
 	}
 
 
-//	public int getTel() {
-//		return tel;
-//	}
-//
-//
-//	public void setTel(int tel) {
-//		this.tel = tel;
-//	}
-//
-//
-//	public Date getBirthday() {
-//		return birthday;
-//	}
-//
-//
-//	public void setBirthday(Date birthday) {
-//		this.birthday = birthday;
-//	}
-
 	public int getBalance() {
 		return balance;
 	}
@@ -112,11 +104,11 @@ public class User {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
-	public String getJoinadte() {
+	public Date getJoinadte() {
 		return joinadte;
 	}
 
-	public void setJoinadte(String joinadte) {
+	public void setJoinadte(Date joinadte) {
 		this.joinadte = joinadte;
 	}
 	

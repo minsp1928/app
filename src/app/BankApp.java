@@ -136,17 +136,17 @@ public class BankApp extends JFrame implements ActionListener {
 				default:
 					System.out.println("화면의 숫자만 입력해주세요.");
 				}
-		}//run2 끝
+		}//bankMenu while 끝
 			
 
-	}
+	}//bankMenu 끝
 	public void adminBankMenu() throws initDepositAmountException {
 		boolean adminBankMenu = true; //질문하는 반복문  (로그인 후 메뉴화면)
 		
 		while(adminBankMenu) {
 
 			Scanner sc = new Scanner(System.in);
-			System.out.println("| 1: 예금 | 2:출금  | 3:잔액조회 | 4: 계좌목록 | 5: 로그아웃 | 6: 종료 |" );//반복문에 넣을것
+			System.out.println("| 1: 예금 | 2:출금  | 3:잔액조회 | 4: 사용자목록 | 5: 로그아웃 | 6: 종료 |" );//반복문에 넣을것
 			System.out.print("선택>  ");
 			int choice=sc.nextInt();//입력받은 값
 		
@@ -161,7 +161,8 @@ public class BankApp extends JFrame implements ActionListener {
 					bs.Balance();
 					break;
 				case 4 ://계좌목록
-					bs.allAccount();
+					bs.allUserAdmin();
+					//계좌목록을 부를 때 파일에 저장(근데 값 추가가 아니라 업데이트,파일에서 목록읽어오기)
 					break;
 				case 5:
 					System.out.println("------로그아웃------");
