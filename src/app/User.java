@@ -1,23 +1,19 @@
 package app;
 
 import java.util.Date;
-//어노테이션을 사용하지 않는것일까?06
+
 public class User {
-	//private으로 필드를..?
+
 //은행-> 유저정보 어떤게 필요한가
-	private int accountNum; //계좌번호 필수로 가야할까? 그럼 회원가입할때 계좌도 생성해야함..계좌생성제한
-	private String name;    //유저 이름
 	private String id;		//유저 아이디 ->pk로 가야할듯 길이 유효성검사
+	private String name;    //유저 이름
 	private String pw;		//유저 비밀번호->길이, 영문, 숫자, 문자 가능하게?
-	private int balance;
-	private Date joinadte;      //유저의 가입일
-	private int grade;    //등급 0 기본, 1:실버 십만원, 2 :골드 백만, 3:플레티넘 천만
+	private Date joindate;      //유저의 가입일
+	private int status;
+	
 //	private int tel;		//유저 전화번호
 //	private Date birthday;	//유저 생일 만약 이벤트를 넣는 다면 있는게 좋겠지 그러면 마일리지같은게 들어가야할까
 	
-
-	
-
 	public User() {
 		//생성자: 객체의 초기화
 		//읻스텐즈 오브젝트가 생략되어있다..형변환 가능이란 의미
@@ -27,53 +23,32 @@ public class User {
 		//멤버필드를 구분할때, 객체를 생성자에서 부를깨 사용이 가능
 		//암묵적인 약속으로 변수같은 네임룰,
 		//생성자 특징
-		this.accountNum = accountNum;
 		this.name = name;//보통 임의로 다른 변수이름을 사용하지않는다.(다른 개발자도 읽을 수 있어야하므로)
 		this.id = id;
 		this.pw = pw;
-	//	this.tel = tel;
-	//	this.birthday = birthday;
-		this.joinadte = joinadte;
-		this.balance = balance;
-		this.grade = grade;
+		this.joindate = joindate;
+		this.status = status;
 	}
 
-	public int getGrade() {
-		return grade;
-	}
-
-	public void setGrade(int grade) {
-		this.grade = grade;
-	}
-
-	public User(int accountNum, String name, String id, String pw, int balance, Date joinadte) {
+	public User(String name, String id, String pw, Date joindate, int status) {
 		super();
-		this.accountNum = accountNum;
 		this.name = name;
 		this.id = id;
 		this.pw = pw;
-		this.balance = balance;
-		this.joinadte = joinadte;
+		this.joindate = joindate;
+		this.status = status;
 	}
 
 	//빈 객체패턴
-	public int getAccountNum() {
-		return accountNum;
-	}
-
-
-	public void setAccountNum(int accountNum) {
-		this.accountNum = accountNum;
-	}
-
 
 	public String getName() {
 		return name;
 	}
 
 
-	public void setName(String name) {
+	public User setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 
@@ -82,8 +57,9 @@ public class User {
 	}
 
 
-	public void setId(String id) {
+	public User setId(String id) {
 		this.id = id;
+		return this;
 	}
 
 
@@ -92,26 +68,30 @@ public class User {
 	}
 
 
-	public void setPw(String pw) {
+	public User setPw(String pw) {
 		this.pw = pw;
+		return this;
 	}
 
 
-	public int getBalance() {
-		return balance;
+	public Date getjoindate() {
+		return joindate;
 	}
 
-	public void setBalance(int balance) {
-		this.balance = balance;
-	}
-	public Date getJoinadte() {
-		return joinadte;
+	public User setjoindate(Date joindate) {
+		this.joindate = joindate;
+		return this;
 	}
 
-	public void setJoinadte(Date joinadte) {
-		this.joinadte = joinadte;
+	public int getStatus() {
+		return status;
 	}
-	
+
+	public User setStatus(int status) {
+		this.status = status;
+		return this;
+	}
+
 	
 	
 }

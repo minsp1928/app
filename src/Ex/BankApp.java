@@ -17,14 +17,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import Ex.User;
-import app.AccountNumber;
-import app.BankService;
-import app.BankServiceImpl;
+import app.BankDao;
+import app.BankDaoImpl;
 import app.initDepositAmountException;
 
 public class BankApp extends JFrame implements ActionListener {
 	JButton login, join, adminLogin;
-	static BankService bs = new BankServiceImpl();
+	static BankDao bs = new BankDaoImpl();
 	//인터페이스는 객체생성불가 , 인터페이스를 임플리먼트로 객체를 선언
 	
 //	static User[] users; //정적으로 선언 기준점
@@ -56,7 +55,7 @@ public class BankApp extends JFrame implements ActionListener {
 	}
 	public static void main(String[] args) throws initDepositAmountException {
 		// main 여기서 실행(spring boot로 치자면 controller)
-		AccountNumber anum = new AccountNumber();//계좌정보
+//	AccountNumber anum = new AccountNumber();//계좌정보
 		int accountNum; //계좌번호를 넣을 변수? 배열?  
 		Scanner sc = new Scanner(System.in);
 			

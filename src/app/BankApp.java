@@ -20,7 +20,7 @@ import Ex.User;
 
 public class BankApp extends JFrame implements ActionListener {
 	JButton login, join, adminLogin;
-	static BankService bs = new BankServiceImpl();
+	static BankDao bd = new BankDaoImpl();
 	//인터페이스는 객체생성불가 , 인터페이스를 임플리먼트로 객체를 선언
 	
 //	static User[] users; //정적으로 선언 기준점
@@ -57,7 +57,8 @@ public class BankApp extends JFrame implements ActionListener {
 		boolean mainMenu = true; //질문하는 반복문 (로그인 화면)
 		while(mainMenu) {
 			
-			System.out.println("| 1: 로그인 | 2:회원가입 | 3: 관리자로그인 | 4: 종료 |");//할 수 있으면 아이디 비밀번호 찾기
+			System.out.println("| 1: 로그인 | 2:회원가입 | 3: 관리자 | 4: 종료 |");
+			System.out.println("| 1: 로그인 | 2:회원가입 | 3: 관리자 | 4: 아이디/비밀번호찾기 | 5: 종료 |");//할 수 있으면 아이디 비밀번호 찾기
 			System.out.print("선택>>");
 			
 			Scanner sc = new Scanner(System.in);
@@ -66,17 +67,20 @@ public class BankApp extends JFrame implements ActionListener {
 			try {//if만 쓰면 다 돈다 -> else if로 전환
 
 				if((int)selectNo == 49 ) {//로그인
-					bs.idpwCheck();
+					bd.idpwCheck();
 					bankApp.bankMenu();//뱅크 메뉴
 					break;
 				}else if((int)selectNo == 50) { //회원가입
-					bs.join();
+					bd.join();
 					
 				}else if((int)selectNo == 51) { //관리자로그인
-					bs.adminLogin();
-					bankApp.adminBankMenu();//메인 메뉴 스타트?
+					bd.adminLogin();
+					bankApp.adminBankMenu();
 					break;
-				}else if((int)selectNo == 52) { //관리자로그인
+				}else if((int)selectNo == 52) { //아이디,비밀번호찾기
+				//	bd.idPwFind();
+					
+				}else if((int)selectNo == 53) { //종료
 					System.out.println("|           ++은행시스템을 종료합니다++           |");
 					break;
 				}
@@ -106,30 +110,33 @@ public class BankApp extends JFrame implements ActionListener {
 		while(bankMenu) {
 
 			Scanner sc = new Scanner(System.in);
-			System.out.println("| 1: 예금 | 2:출금  | 3:잔액조회 | 4: 계좌목록 | 5: 로그아웃 | 6: 종료 |" );//반복문에 넣을것
+			System.out.println("| 1: 계좌개설 | 2: 예금 | 3:출금  | 4:잔액조회 | 5: 계좌목록 | 6: 로그아웃 | 7: 종료 |" );//반복문에 넣을것
 			System.out.print("선택>  ");
 			int choice=sc.nextInt();//입력받은 값
 		
-			switch (choice) {		
-				case 1: //예금 
-					bs.deposit();
+			switch (choice) {	
+				case 1: //계좌개설
+					bd.openAccount();
 					break;
-				case 2://출금 		
-					bs.withDraw();       			
+				case 2: //예금 
+					bd.deposit();
 					break;
-				case 3://잔액조회/                  
-					bs.Balance();
+				case 3://출금 		
+					bd.withDraw();       			
 					break;
-				case 4 ://계좌목록
-					bs.allAccount();
+				case 4://잔액조회/                  
+					bd.Balance();
 					break;
-				case 5:
+				case 5 ://계좌목록
+					bd.allAccount();
+					break;
+				case 6 ://로그아웃
 					System.out.println("------로그아웃------");
 					bankMenu = false;
 					BankApp bankApp = new BankApp();
 					bankApp.mainMenu();
 					break;
-				case 6:
+				case 7://종료
 					System.out.println("시스템을 종료합니다.");
 					bankMenu = false;
 					break;
@@ -152,16 +159,16 @@ public class BankApp extends JFrame implements ActionListener {
 		
 			switch (choice) {		
 				case 1: //예금 
-					bs.deposit();
+					bd.deposit();
 					break;
 				case 2://출금 		
-					bs.withDraw();       			
+					bd.withDraw();       			
 					break;
 				case 3://잔액조회/                  
-					bs.Balance();
+					bd.Balance();
 					break;
 				case 4 ://계좌목록
-					bs.allUserAdmin();
+					bd.allUserAdmin();
 					//계좌목록을 부를 때 파일에 저장(근데 값 추가가 아니라 업데이트,파일에서 목록읽어오기)
 					break;
 				case 5:
