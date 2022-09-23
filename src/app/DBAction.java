@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import jdbc.Ex30DBAction;
-
+//
 public class DBAction {
 	private static DBAction instance; 
 	private Connection conn;			  

@@ -32,7 +32,7 @@ public class BankDaoImpl implements BankDao{
 	//	int accountNum; //계좌번호를 넣을 변수? 배열?  	
 		//User user = new User(); -> 여기서만 하면 여기서만 사용됨 놉!
 	private static int index = 0;
-	
+	//
 	@Override
 	public void idpwCheck() {//로그인 체크
 		Scanner sc = new Scanner(System.in);

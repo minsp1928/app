@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class BankSketch {
-
+//
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 	//	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

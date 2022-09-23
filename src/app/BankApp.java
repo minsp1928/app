@@ -22,7 +22,7 @@ public class BankApp extends JFrame implements ActionListener {
 	JButton login, join, adminLogin;
 	static BankDao bd = new BankDaoImpl();
 	//인터페이스는 객체생성불가 , 인터페이스를 임플리먼트로 객체를 선언
-	
+	//dd
 //	static User[] users; //정적으로 선언 기준점
 	
 	static List <User> arr = new LinkedList();

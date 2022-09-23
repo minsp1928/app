@@ -3,7 +3,7 @@ package app;
 import java.util.Date;
 
 public class Account {
-
+//
 	private String id;			//유저id
 	private String accountNum;	//계좌번호
 	private String accountPw;	//계좌비밀번호

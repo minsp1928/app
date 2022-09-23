@@ -3,7 +3,7 @@ package app;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
+//
 public interface BankDao {
 	void openAccount();//계좌개설
 //	boolean deposit(User cust, long input); //입금
