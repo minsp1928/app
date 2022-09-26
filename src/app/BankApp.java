@@ -128,7 +128,8 @@ public class BankApp extends JFrame implements ActionListener {
 					bd.Balance();
 					break;
 				case 5 ://계좌목록
-					bd.allAccount();
+					String id= app.User.getId();
+					bd.allAccount(id);
 					break;
 				case 6 ://로그아웃
 					System.out.println("------로그아웃------");

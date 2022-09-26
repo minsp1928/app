@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Account {
 //
-	private String id;			//유저id
-	private String accountNum;	//계좌번호
-	private String accountPw;	//계좌비밀번호
-	private int balance;		//잔액
-	private Date opendate;      //계좌생성일
+	private static String id;			//유저id
+	private static String accountNum;	//계좌번호
+	private static String accountPw;	//계좌비밀번호
+	private static int balance;		//잔액
+	private static Date opendate;      //계좌생성일
 	
 	public Account() {
 		super();
@@ -24,19 +24,19 @@ public class Account {
 	}
 	
 	
-	public Date getopendate() {
+	public static Date getOpendate() {
 		return opendate;
 	}
-	public String getId() {
+	public static String getId() {
 		return id;
 	}
-	public String getAccountNum() {
+	public static String getAccountNum() {
 		return accountNum;
 	}
-	public String getAccountPw() {
+	public static String getAccountPw() {
 		return accountPw;
 	}
-	public int getBalance() {
+	public static int getBalance() {
 		return balance;
 	}
 	
@@ -57,7 +57,7 @@ public class Account {
 		this.balance = balance;
 		return this;
 	}
-	public Account setopendate(Date opendate) {
+	public Account setOpendate(Date opendate) {
 		this.opendate = opendate;
 		return this;
 	}

@@ -5,11 +5,11 @@ import java.util.Date;
 public class User {
 
 //은행-> 유저정보 어떤게 필요한가
-	private String id;		//유저 아이디 ->pk로 가야할듯 길이 유효성검사
-	private String name;    //유저 이름
-	private String pw;		//유저 비밀번호->길이, 영문, 숫자, 문자 가능하게?
-	private Date joindate;      //유저의 가입일
-	private int status;
+	private static String id;		//유저 아이디 ->pk로 가야할듯 길이 유효성검사
+	private static String name;    //유저 이름
+	private static String pw;		//유저 비밀번호->길이, 영문, 숫자, 문자 가능하게?
+	private static Date joindate;      //유저의 가입일
+	private static int status;
 	
 //	private int tel;		//유저 전화번호
 //	private Date birthday;	//유저 생일 만약 이벤트를 넣는 다면 있는게 좋겠지 그러면 마일리지같은게 들어가야할까
@@ -41,18 +41,18 @@ public class User {
 
 	//빈 객체패턴
 
-	public String getName() {
+	public static String getName() {
 		return name;
 	}
 
 
-	public User setName(String name) {
+	public  User setName(String name) {
 		this.name = name;
 		return this;
 	}
 
 
-	public String getId() {
+	public static String getId() {
 		return id;
 	}
 
@@ -63,7 +63,7 @@ public class User {
 	}
 
 
-	public String getPw() {
+	public static String getPw() {
 		return pw;
 	}
 
@@ -74,16 +74,16 @@ public class User {
 	}
 
 
-	public Date getjoindate() {
+	public static Date getJoindate() {
 		return joindate;
 	}
 
-	public User setjoindate(Date joindate) {
+	public User setJoindate(Date joindate) {
 		this.joindate = joindate;
 		return this;
 	}
 
-	public int getStatus() {
+	public static int getStatus() {
 		return status;
 	}
 

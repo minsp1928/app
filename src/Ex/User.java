@@ -10,7 +10,7 @@ public class User {
 	private String id;		//유저 아이디 ->pk로 가야할듯 길이 유효성검사
 	private String pw;		//유저 비밀번호->길이, 영문, 숫자, 문자 가능하게?
 	private int balance;
-	private Date joinadte;      //유저의 가입일
+	private Date joindate;      //유저의 가입일
 //	private int tel;		//유저 전화번호
 //	private Date birthday;	//유저 생일 만약 이벤트를 넣는 다면 있는게 좋겠지 그러면 마일리지같은게 들어가야할까
 	
@@ -35,14 +35,14 @@ public class User {
 		this.balance = balance;
 	}
 
-	public User(int accountNum, String name, String id, String pw, int balance, Date joinadte) {
+	public User(int accountNum, String name, String id, String pw, int balance, Date joindate) {
 		super();
 		this.accountNum = accountNum;
 		this.name = name;
 		this.id = id;
 		this.pw = pw;
 		this.balance = balance;
-		this.joinadte = joinadte;
+		this.joindate = joindate;
 	}
 
 	//빈 객체패턴
@@ -112,13 +112,14 @@ public class User {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
-	public Date getJoinadte() {
-		return joinadte;
+	public Date getJoindate() {
+		return joindate;
 	}
 
-	public void setJoinadte(Date joinadte) {
-		this.joinadte = joinadte;
+	public void setJoindate(Date joindate) {
+		this.joindate = joindate;
 	}
+
 	
 	
 	
