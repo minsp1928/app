@@ -4,12 +4,14 @@ import java.util.Date;
 
 public class Account {
 //
-	private static String id;			//유저id
-	private static String accountNum;	//계좌번호
-	private static String accountPw;	//계좌비밀번호
-	private static int balance;		//잔액
-	private static Date opendate;      //계좌생성일
-	
+	private  String id;			//유저id
+	private  String accountNum;	//계좌번호
+	private  String accountPw;	//계좌비밀번호
+	private  int balance;		//잔액
+	private  Date opendate;      //계좌생성일
+	/* static : 정적은 한 메모리만 참고하고 동적은 새로운 메모리를 참고하게 된다.
+	 * private static Date opendate; //계좌생성일
+	 */	
 	public Account() {
 		super();
 		
@@ -24,19 +26,19 @@ public class Account {
 	}
 	
 	
-	public static Date getOpendate() {
+	public  Date getOpendate() {
 		return opendate;
 	}
-	public static String getId() {
+	public  String getId() {
 		return id;
 	}
-	public static String getAccountNum() {
+	public  String getAccountNum() {
 		return accountNum;
 	}
-	public static String getAccountPw() {
+	public  String getAccountPw() {
 		return accountPw;
 	}
-	public static int getBalance() {
+	public  int getBalance() {
 		return balance;
 	}
 	

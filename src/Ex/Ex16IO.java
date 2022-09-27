@@ -28,6 +28,9 @@ public class Ex16IO {
 		BufferedReader br = new BufferedReader(isr);
 		System.out.println("입력 : ");
 		String str ="";
+		//파일라이트의 어펜드 파일스트림계열중 파일롸이터의 어펜드 : ex 메뉴
+		//스트링버퍼
+		//루프돌려서 있는 만큼 돌리기
 		while(!str.equals("end")) { //end를 치면 반복중단, 파일로 저장d
 			str = br.readLine();
 			pw.println(str);//여기서 파일이 저장되는것

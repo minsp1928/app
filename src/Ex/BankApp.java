@@ -107,7 +107,7 @@ public class BankApp extends JFrame implements ActionListener {
 					bs.Balance();
 					break;
 				case 4 ://계좌목록
-					bs.allAccount();
+	//				bs.allAccount();
 					break;
 				case 5:
 					System.out.println("시스템을 종료합니다.");

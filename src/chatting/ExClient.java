@@ -26,11 +26,12 @@ import javax.swing.JTextField;
 	//Runnable : 스레드를 표현하겠다
 	private BufferedReader i;
 	private PrintWriter o;
-	private JTextArea output;//여러줄
+	private JTextArea output;//여러\줄
 	private JTextField input;//한 줄
 	private JLabel label;
 	private Thread listener; //인스턴스 생성(멤버변수)_
 	private String host; //(서버)
+	
 	private JScrollPane jp;//미션1
 	private JScrollBar jb;//미션1
 	

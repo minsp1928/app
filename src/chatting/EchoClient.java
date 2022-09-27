@@ -39,9 +39,9 @@ public class EchoClient {
 				EchoClient ec;
 				System.out.println("메시지를 입력하세요");
 				if(args.length > 0) {
-					ec = new EchoClient(args[0], 7777);//입력한 ip가 있을때
+					ec = new EchoClient(args[0], 1289);//입력한 ip가 있을때
 				}else {
-					ec = new EchoClient("localhost", 7777);
+					ec = new EchoClient("localhost", 1289);
 				}
 				ec.echo();
 				ec.close();

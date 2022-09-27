@@ -2,8 +2,14 @@
 package app;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.Date;
@@ -28,6 +34,8 @@ public class BankDaoImpl implements BankDao{
 	static BankDao bd = new BankDaoImpl();
 	static Map<Integer, Object> arrMap = new HashMap<Integer, Object>();	
 	static List<Account> accounts;
+	static List<User> userinfos;
+	static User user;
 	//static Account[] accounts = new Account[50];
 	//	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	//	int balance = 20000;//잔고
@@ -36,7 +44,7 @@ public class BankDaoImpl implements BankDao{
 	private static int index = 0;
 
 	@Override
-	public void idpwCheck() {//로그인 체크
+	public User idpwCheck() {//로그인 체크
 		Scanner sc = new Scanner(System.in);
 		String id, pw;
 		boolean check = true;
@@ -56,7 +64,6 @@ public class BankDaoImpl implements BankDao{
 			Connection conn = DBAction.getInstance().getConnection();
 			ResultSet rs = null;
 			String sql ="select * from user where id= ? and pw = ?";
-			User user = new User();
 			
 			try {
 				pstmt = conn.prepareStatement(sql);
@@ -79,7 +86,10 @@ public class BankDaoImpl implements BankDao{
 				System.out.println("|                          |");
 				System.out.println("| 아이디 혹은 비밀번호가 다릅니다 |");
 				System.out.println("|                          |");
-				
+				System.out.println("");
+				user = new User().setId("");
+				return user;
+//				continue;
 			} catch (Exception e) {
 				System.out.println("BankDaoImpl idpwCheck Exception->");
 				e.printStackTrace();
@@ -92,6 +102,7 @@ public class BankDaoImpl implements BankDao{
 					e.printStackTrace();
 				}
 			}
+			return user;
 			
 			/*
 				for(int i=0; i<BankApp.arr.size(); i++) {//아이디, 패스워드 체크
@@ -108,6 +119,8 @@ public class BankDaoImpl implements BankDao{
 			
 		// 메서드로 만들어서 (기능)을 호출하는것으로.
 	}
+		return user;
+
 		
 		
 	
@@ -182,7 +195,6 @@ public class BankDaoImpl implements BankDao{
 	//	System.out.println("bankseviceImpl 회원가입");
 		String sql = "INSERT INTO user VALUES (?, ?, ?, ?, ?)";
 		int result=0;
-		User user = new User();
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -226,9 +238,9 @@ public class BankDaoImpl implements BankDao{
 	@Override
 	public void openAccount() {//계좌개설
 		Scanner sc = new Scanner(System.in);
-		String id = app.User.getId();
+		String id = user.getId();
 //		System.out.println("openAccount id = "+id);
-		String name = app.User.getName();
+		String name = user.getName();
 		int balance = 0;
 		int accnum1 = (int)((Math.random()*99999)+1);
 		int accnum2 = (int)((Math.random()*999999)+1);
@@ -326,6 +338,7 @@ public class BankDaoImpl implements BankDao{
 		}
 		
 	}//관리자로그인 끝
+	
 	public static Properties getAdminInfo() {//프로퍼티안의 관리자 정보가져오기
 		//properties 클래스를 사용하여 설정파일을 제어
 		Properties properties =null;
@@ -345,15 +358,17 @@ public class BankDaoImpl implements BankDao{
 		
 	}//관리자정보 가져오기 끝
 
-
 	@Override
 	public boolean deposit() {//예금
 		Scanner sc = new Scanner(System.in);
 		boolean check = true;
-		String id = app.User.getId();
+//		User user = bd.idpwCheck();
+		String id = user.getId();
+		
 		int deposit =0;
 		while(check) {
 			
+			System.out.println("[          *예금*           ]");
 			System.out.println("---------------------------");
 			System.out.print("| 계좌번호를 입력해주세요 : ");
 			String accountNum = sc.next();
@@ -365,8 +380,9 @@ public class BankDaoImpl implements BankDao{
 			java.util.Date openDate = account.getOpendate();
 			int balance = account.getBalance();
 			System.out.println("balance -> "+balance);
+			System.out.println("balance account -> "+account.getAccountNum());
 			
-			if(account != null) {
+			if(account.getAccountNum() != null) {
 				System.out.println("---------------------------");
 				System.out.print("| 입금할 금액을 입력해주세요: ");
 				try {
@@ -375,6 +391,7 @@ public class BankDaoImpl implements BankDao{
 				    
 					balance += deposit;
 					System.out.println("balance += deposit -> "+balance);
+					
 					if(deposit>0) {
 						Connection conn = DBAction.getInstance().getConnection();
 //						PreparedStatement pstmt = null;
@@ -399,12 +416,7 @@ public class BankDaoImpl implements BankDao{
 						System.out.println("|          *입금완료 *          ");
 						System.out.println("| "+deposit+"원이 입금되었습니다. ");
 						System.out.println("| 잔액은 " + balance + "입니다.  ");
-					}
-				} catch (Exception e) {
-					
-						
-				}
-					}else if(balance<=0){
+					}else if(deposit>balance || deposit<0){
 						try {
 							throw new initDepositAmountException(
 									
@@ -413,44 +425,58 @@ public class BankDaoImpl implements BankDao{
 							System.out.println(e2.getMessage());
 						}				
 					}
+				} catch (Exception e) {
+					System.out.println("오류");
+				}
+					
 			
 			break;
+			}else {
+				System.out.println("옳바른 계좌정보를 입력해 주세요");
+				break;
+			}
 		}
 		
 		return true;
+
 
 	}//예금 끝
 
 	@Override
 	public boolean withDraw() {//출금
+
+
 		Scanner sc = new Scanner(System.in);
 		boolean check = true;
-		String id = app.User.getId();
+//		User user = bd.idpwCheck();
+		String id = user.getId();
 		int withDraw =0;
 		while(check) {
 			
+			System.out.println("[          *출금*           ]");
 			System.out.println("---------------------------");
-			System.out.print("| 계좌번호를 입력해주세요 : ");
+			  System.out.print("| 계좌번호를 입력해주세요 : ");
 			String accountNum = sc.next();
 			System.out.println("--------------------------");
 			System.out.print("| 계좌비밀번호를 입력해 주세요 : ");
 			String accountPw = sc.next();
 			
 			Account account = bd.selectAccount(accountNum, accountPw);
+			
 			java.util.Date openDate = account.getOpendate();
 			int balance = account.getBalance();
-			System.out.println("현재 잔고는 "+balance+"원 입니다.");
 			
-			if(account != null) {
+			if(account.getAccountNum() != null) {
+				System.out.println("현재 잔고는 "+balance+"원 입니다.");
 				System.out.println("---------------------------");
 				System.out.print("| 출금할 금액을 입력해주세요: ");
 				try {
 					withDraw = sc.nextInt();
 				    System.out.println("withDraw -> "+withDraw);
 				    
-					System.out.println("balance -= withDraw -> "+balance);
 					if(withDraw<=balance) {
 						balance -= withDraw;
+						System.out.println("balance -= withDraw -> "+balance);
 						Connection conn = DBAction.getInstance().getConnection();
 //						PreparedStatement pstmt = null;
 						Statement stmt = null;
@@ -474,12 +500,14 @@ public class BankDaoImpl implements BankDao{
 						System.out.println("|          *출금완료 *          ");
 						System.out.println("| "+withDraw+"원이 출금되었습니다. ");
 						System.out.println("| 잔액은 " + balance + "입니다.  ");
+						break;
 					}
 				} catch (Exception e) {
 					
 						
 				}
 					}else if(withDraw>balance ){
+						System.out.println("|잔액이 부족합니다.");
 						try {
 							throw new initDepositAmountException(
 									
@@ -495,9 +523,14 @@ public class BankDaoImpl implements BankDao{
 						} catch (Exception e2) {
 							System.out.println(e2.getMessage());
 						}				
+						break;
+					}
+					else {
+						System.out.println("옳바른 계좌정보를 입력해 주세요");
+						break;
 					}
 			
-			break;
+			
 		}
 		
 		return true;
@@ -505,17 +538,22 @@ public class BankDaoImpl implements BankDao{
 		
 
 	}//출금 끝
+	
+	
 	@Override
-	//깃허브테스트
-	public int Balance() {//잔액확인////////
+	
+	public int Balance() {//잔액확인
 		Scanner sc = new Scanner(System.in);
 		boolean check = true;
-		String name = app.User.getName();
+	//	User user = bd.idpwCheck();
+		String id = user.getId();
+		String name = user.getName();
 		while(check) {
+			System.out.println("[        *잔액확인*         ]");
 			System.out.println("---------------------------");
-			System.out.print("| 계좌번호를 입력해 주세요 : ");
+			System.out.print("| 계좌번호를 입력해주세요 : ");
 			String accountNum = sc.next();
-			System.out.println("---------------------------");
+			System.out.println("--------------------------");
 			System.out.print("| 계좌비밀번호를 입력해 주세요 : ");
 			String accountPw = sc.next();
 			System.out.println("---------------------------");
@@ -526,11 +564,11 @@ public class BankDaoImpl implements BankDao{
 			
 			int balnce = accountNumberChk.getBalance();
 			
-			if(accountNumberChk == null) {
+			if(accountNumberChk.getAccountNum() == null) {
 				System.out.println("|                          |");
 				System.out.println("| 옳바른 정보를 입력해주세요.    |");
 				System.out.println("|                          |");
-				continue;
+				break;
 			}else {
 				System.out.println("--------------------------------------");
 				System.out.println("| "+name+"님의 잔액은 "+balnce+"원 입니다.|");
@@ -544,17 +582,23 @@ public class BankDaoImpl implements BankDao{
 		return 0;
 			
 	}//
-			
-			
+					
 	@Override
-	public void allAccount(String id) {//전체계좌목록 조회
+	public void allAccount() throws IOException {//전체계좌목록 조회 및 파일 저장
 		//일반 아이디일때 조회 가능
 		//if(BankApp.arr.)
+	//	User user = bd.idpwCheck();
+		File file = new File("C:/MINBank/userinfo.txt");
+		FileWriter fw = new FileWriter(file);
+		BufferedWriter bw = new BufferedWriter(fw);
+		PrintWriter pw = new PrintWriter(bw,true);
+		
+		String id = user.getId();
+		
 		accounts = new ArrayList<>();
 		System.out.println("|    --------------------    |");
 		System.out.println("|           계좌목록           |");
 		System.out.println("|    --------------------    |");
-		
 		
 		//System.out.println("id -> "+id);
 		
@@ -574,28 +618,56 @@ public class BankDaoImpl implements BankDao{
 				String accountPw = rs.getString("accountPw");
 				int balance = rs.getInt("balance");
 				Date opendate = rs.getDate("opendate");
-					
-				accounts.add(new Account().setId(id)
+				
+				Account account2 = new Account().setId(id)
 						   .setAccountNum(accountNum)
 						   .setAccountPw(accountPw)
 						   .setBalance(balance)
-						   .setOpendate(opendate));
-				account = new Account(id, accountNum, accountPw, balance, opendate);
+						   .setOpendate(opendate);
+				accounts.add(account2);
+				
+//				accounts.add(new Account().setId(id)
+//						   .setAccountNum(accountNum)
+//						   .setAccountPw(accountPw)
+//						   .setBalance(balance)
+//						   .setOpendate(opendate));
+//				account = new Account(id, accountNum, accountPw, balance, opendate);
 			//	System.out.println(" id  = "+id + " accountNum ="+ accountNum);
 				//System.out.println(" accountPw  = "+accountPw + " balance ="+ balance);
 				//System.out.println(" opendate  = "+opendate + " account ="+ account);
 			
 			}
-			Account accountChk = bd.accountCheck(id);
+		//	Account accountChk = bd.accountCheck(id);
+			//String str="";
+			if(accounts.size()>0) {
 
-			if(accountChk !=null) {
-				for(int i = 1; i<accounts.size(); i++) {
+				for(int i = 0; i<accounts.size(); i++) {
+					
+				//	System.out.println("------------------>나오는 지 체크"+str);
 					System.out.println("| 계좌번호    : "+accounts.get(i).getAccountNum());
 					System.out.println("| 계좌비밀번호 : "+accounts.get(i).getAccountPw());
 					System.out.println("| 잔      액 : "+accounts.get(i).getBalance());
 					System.out.println("|      --------------------      |");
+				/*
+				 str = "| 아이디    : "+accounts.get(i).getId()
+							+"\t| 계좌번호 : "+accounts.get(i).getAccountNum()
+							+"\t| 계좌비밀번호 : "+accounts.get(i).getAccountPw()
+							+"\t| 잔      액 : "+accounts.get(i).getBalance()
+							+"\t|      --------------------      |";
+					pw.println(str);
+				 				
+				 */
 				}
-//				
+			}else {
+				
+				System.out.println("|                                        |");
+				System.out.println("|계좌정보가 존재하지않습니다.                   |");
+				System.out.println("|                                        |");
+			
+			}
+		
+
+					
 //				for(Account ac : accounts) {
 //					System.out.println("| 계좌번호    : "+ac.getAccountNum());
 //					System.out.println("| 계좌비밀번호 : "+ac.getAccountPw());
@@ -603,12 +675,7 @@ public class BankDaoImpl implements BankDao{
 //					System.out.println("|      --------------------      |");
 //
 //				}
-			}else {
-				System.out.println("|                                        |");
-				System.out.println("|계좌정보가"
-						+ " 존재하지않습니다. 신규계좌를 개설해주세요.|");
-				System.out.println("|                                        |");
-			}
+		
 			
 		} catch (Exception e) {
 			System.out.println(" allAccount ");
@@ -617,6 +684,7 @@ public class BankDaoImpl implements BankDao{
 			try {
 				if (rs != null)rs.close();
 				if (pstmt != null)pstmt.close();
+			//	if (conn != null)conn.close();
 			}catch (Exception e) {
 				System.out.println(" allAccount ");
 				e.printStackTrace();
@@ -638,10 +706,101 @@ public class BankDaoImpl implements BankDao{
 	}
 
 	@Override
-	public void allUserAdmin() {//관리자용 사용자정보목록 조회 /////////////////
-		System.out.println("|    --------------------    |");
-		System.out.println("|           사용자 목록         |");
-		System.out.println("|    --------------------    |");
+	public void allUserAdmin() {//관리자용 사용자정보, 계좌목록 조회 /////////////////
+		System.out.println();
+		System.out.println();
+		List<User> userinfo = new ArrayList<>();
+		accounts = new ArrayList<>();
+		
+	
+		String name="";
+		Connection conn = DBAction.getInstance().getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		String sql = "select * from account a, user u where a.id= u.id order by a.id; ";
+		Account account = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+		//	User user = new User();
+			
+			
+			while(rs.next()) {
+				String accountNum = rs.getString("accountNum");
+				String accountPw = rs.getString("accountPw");
+				int balance = rs.getInt("balance");
+				Date opendate = rs.getDate("opendate");
+				String id = rs.getString("id");
+				
+				
+				
+				accounts.add(new Account().setId(id)
+						   .setAccountNum(accountNum)
+						   .setAccountPw(accountPw)
+						   .setBalance(balance)
+						   .setOpendate(opendate));
+			
+		
+			}//while end
+			
+			userinfo = bd.allUserinfoAdmin();
+		
+		//	Account accountChk = bd.accountCheck(id);
+			System.out.println("|                                |");
+			System.out.println("|      ------사용자목록-------      |");
+			System.out.println("|                                |");
+			for(int j = 0; j<userinfo.size(); j++) {
+				System.out.println("| "+userinfos.get(j).getName()+"님  ");
+				System.out.println("| 아이디    : "+userinfos.get(j).getId());
+				System.out.println("| 비밀 번호 : "+userinfos.get(j).getPw());
+				System.out.println("| 가  입  일  : "+userinfos.get(j).getJoindate());
+				System.out.println("|      --------------------      |");
+			}
+			
+			System.out.println("");
+			System.out.println("|                                |");
+			System.out.println("|      ------계좌 목록-------      |");
+			System.out.println("|                                |");
+			if(accounts.size()>0) {
+			
+				for(int i = 0; i<accounts.size(); i++) {
+					System.out.println("| "+accounts.get(i).getId()+"님  ");
+					System.out.println("| 계좌번호    : "+accounts.get(i).getAccountNum());
+					System.out.println("| 계좌비밀번호 : "+accounts.get(i).getAccountPw());
+					System.out.println("| 잔      액 : "+accounts.get(i).getBalance());
+					System.out.println("| 생  성  일  : "+accounts.get(i).getOpendate());
+					System.out.println("|      --------------------      |");
+				
+				}
+				bd.fileInput();
+			}else {
+				System.out.println("|                                        |");
+				System.out.println("|계좌정보가 존재하지않습니다. 신규계좌를 개설해주세요.|");
+				System.out.println("|                                        |");
+			}
+		}catch (Exception e) {
+			System.out.println("bankDaoImpl allUserAdmin -?>");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)pstmt.close();
+			//	if (conn != null)conn.close();
+			} catch (Exception e2) {
+				System.out.println("bankDaoImpl allUserAdmin -?>");
+				e2.printStackTrace();
+			}
+		}
+		
+
+					
+//				for(Account ac : accounts) {
+//					System.out.println("| 계좌번호    : "+ac.getAccountNum());
+//					System.out.println("| 계좌비밀번호 : "+ac.getAccountPw());
+//					System.out.println("| 잔      액 : "+ac.getBalance());
+//					System.out.println("|      --------------------      |");
+//
+//				}
 		
 		
 		
@@ -670,7 +829,7 @@ public class BankDaoImpl implements BankDao{
 		Connection conn = DBAction.getInstance().getConnection();
 		ResultSet rs = null;
 		String sql = "select id from user where id='"+id+"'";
-		User user = new User();
+		//User user = new User();
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -734,19 +893,404 @@ public class BankDaoImpl implements BankDao{
 		}
 		return account;
 	}
-
-	@Override
-	public Account accountCheck(String id) {//계좌 유무 확인
-		for(Account accountChk : accounts) {
-			if(accountChk.getId().equals(id)) {
-				return accountChk;
+	
+	public List<User> allUserinfoAdmin() {//관리자용 사용자 정보
+		userinfos = new ArrayList<>();
+		
+		Connection conn = DBAction.getInstance().getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		String sql = "select * from user order by name";
+		Account account = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String id = rs.getString("id");
+				String name = rs.getString("name");
+				String pw = rs.getString("pw");
+				Date joinDate = rs.getDate("joinDate");
+				
+				user = new User().setId(id)
+						   .setName(name)
+						   .setPw(pw)
+						   .setJoindate(joinDate);
+						   
+				userinfos.add(user);
+				
+			}
+			for(int j = 0; j<userinfos.size(); j++) {
+//				System.out.println("| "+userinfos.get(j).getName()+"님  ");
+//				System.out.println("| 아이디    : "+userinfos.get(j).getId());
+//				System.out.println("| 비밀 번호 : "+userinfos.get(j).getPw());
+//				System.out.println("| 가  입  일  : "+userinfos.get(j).getJoindate());
+//				System.out.println("|      --------------------      |");
+			}
+			
+		} catch (Exception e) {
+			System.out.println(" allAccount ");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)rs.close();
+				if (pstmt != null)pstmt.close();
+			//	if (conn != null)conn.close();
+			}catch (Exception e) {
+				System.out.println(" allAccount ");
+				e.printStackTrace();
 			}
 		}
-		return null;
+		return userinfos;
+	
+	}
+	
+
+	@Override
+	public void deleteAccount() {//계좌해지
+		Scanner sc =new Scanner(System.in);
+		
+		System.out.println("|                               |");
+		System.out.print("|    해지할 계좌번호를 입력해 주세요 : ");
+		String accountNum = sc.next();
+		System.out.println("--------------------------");
+		System.out.print("| 계좌비밀번호를 입력해 주세요 : ");
+		String accountPw = sc.next();
+		Account account = bd.selectAccount(accountNum, accountPw);
+		if(account.getAccountNum()!=null) {
+			System.out.println("선택된 계좌는 '"+accountNum+"'입니다.");
+			Connection conn = DBAction.getInstance().getConnection();
+			PreparedStatement pstmt = null;
+			String sql = "delete from account where accountnum = ?";
+			String accountnum = account.getAccountNum();
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, accountnum);
+				
+				pstmt.executeUpdate();
+				System.out.println("계좌가 해지되었습니다.");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+		}else {
+			System.out.println("옳바른 계좌정보를 입력해 주세요");
+		
+		}
 	}
 
+	@Override
+	public void userDelete() {//회원 탈퇴
+		Scanner sc =new Scanner(System.in);
+		
+		System.out.println("|                               |");
+		System.out.print("| 탈퇴시킬 회원의 아이디를 입력해주세요:");
+		String id = sc.next();
+		user = bd.selectId(id);
+		if(user.getId() !=null) {//멤버가 있다면
+			System.out.println("--------------------------");
+			System.out.print("| 관리자 비밀번호를 입력해 주세요 : ");
+			String pw = sc.next();		
+			Properties properties = getAdminInfo();
+			String adminPW = properties.getProperty("adminPw");//admin
+			if(pw.equals(adminPW)) {//관리자 비밀번호와 같다면
+				Connection conn = DBAction.getInstance().getConnection();
+				PreparedStatement pstmt=null;
+				String userSql = "delete from user where id=?";
+				String accountSql = "delete from account where id=?";
+				try {
+					pstmt = conn.prepareStatement(accountSql);
+					pstmt.setString(1, id);
+					pstmt.executeUpdate();
+					
+
+					pstmt = conn.prepareStatement(userSql);
+					pstmt.setString(1, id);
+					pstmt.executeUpdate();
+					System.out.println("");
+					System.out.println("|  -----회원탈퇴가 완료되었습니다.-----  |");
+					System.out.println("");
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}else {
+				System.out.println("| 관리자 비밀번호가 틀렸습니다.");
+			}
+		}else if (user.getId() ==null){
+			System.out.println("|  존재하지 않는 아이디입니다.");
+		}
+	
+		
+	}
+
+	@Override
+	public void fileInput() {//파일저장
+		System.out.println("|  파일에 저장중 . . . |");
+		try {
+			 PrintWriter pw = new PrintWriter(new FileWriter(new File("C:/MinBank/userinfo.text"), true));
+	        StringBuilder sb = new StringBuilder();
+	        for(int i = 0; i<userinfos.size(); i++) {
+	        	sb.append(userinfos.get(i).getName());
+	        	sb.append("#");
+	        	sb.append(userinfos.get(i).getId());
+	        	sb.append("#");
+	        	sb.append(userinfos.get(i).getJoindate());
+	        	sb.append("#");
+	        }
+	        for(int j = 0; j<accounts.size(); j++) {
+	        	sb.append(accounts.get(j).getId());
+	        	sb.append("#");
+	        	sb.append(accounts.get(j).getAccountNum());
+	        	sb.append("#");
+	        	sb.append(accounts.get(j).getOpendate());
+	        	sb.append("#");
+	        }
+	        pw.println(sb.toString());
+	        pw.close();
+	        
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
+
+	@Override
+	public void remittance() {//송금?
+		Scanner sc = new Scanner(System.in);
+		boolean run = true;
+		while(run) {
+			System.out.println("[       * 계좌이체 *         ]");
+			System.out.println("---------------------------");
+			System.out.print("| 본인계좌번호를 입력해주세요 : ");
+			String fromAccountNum = sc.next();
+			System.out.println("--------------------------");
+			System.out.print("| 보내실 계좌번호를 입력해주세요 : ");
+			String toAccountNum = sc.next();
+			
+			System.out.println("--------------------------");
+			System.out.print("| 이체하실 금액을 입력해주세요 : ");
+			int money= sc.nextInt();
+			
+			System.out.println("--------------------------");
+			System.out.print("| 계좌비밀번호를 입력해 주세요 : ");
+			String fromAccountPw = sc.next();
+			
+			Account accCheck = bd.selectAccount(fromAccountNum, fromAccountPw);
+			
+			if(accCheck.getAccountNum() != null) {
+				Account acc = bd.selectRemittanceAccount(toAccountNum);//받는 계좌존재확인
+				if(acc.getAccountNum()!=null) {
+					bd.withDrawRun(fromAccountNum, money);
+					bd.depositRun(toAccountNum, money);
+					break;
+					}else {
+					System.out.println("| 옳바른 계좌번호를 입력해주세요.");
+				}
+			}else {
+				System.out.println("| 옳바른 계좌정보를 입력해주세요.");
+			}
+		}
+	}
+	@Override
+	public Account selectRemittanceAccount(String accountNum) {//송금될 계좌확인
+		//여기서 해야할것이 무엇인가
+		//계좌번호와 비밀번호를 입력해, select 해서 account객체에 값이 있는지 확인해라.
+		Account account = new Account();
+		Connection conn = DBAction.getInstance().getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select * from account where accountNum=?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,accountNum);
+		
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				account = new Account().setId(rs.getString("id"))
+									   .setAccountNum(rs.getString("accountNum"))
+									   .setAccountPw(rs.getString("accountPw"))
+									   .setBalance(rs.getInt("balance"))
+									   .setOpendate(rs.getDate("opendate"));
+			}
+		} catch (Exception e) {
+			System.out.println("bankDaoImpl selectAccount ->?");
+			e.printStackTrace();
+		} finally{
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+			//	if(conn!=null) conn.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		return account;
+	}	
+
+	@Override
+	public boolean depositRun(String toAccountNum, int money) {//이체용 예금... 이걸 하나만쓰고 객체지향해서 사용했으면 좋았을텐데...
+		boolean check = true;
+		String accountNum = toAccountNum;
+		int deposit = money;
+		while(check) {
+			Account acc =  bd.selectRemittanceAccount(accountNum);
+			int balance = acc.getBalance();
+//			System.out.println("balance -> "+balance);
+//			System.out.println("balance account -> "+acc.getAccountNum());
+			
+			if(acc.getAccountNum() != null) {
+				
+				try {
+//				    System.out.println("deposit -> "+deposit);
+				    
+					balance += deposit;
+					System.out.println("balance += deposit -> "+balance);
+					
+					if(deposit>0) {
+						Connection conn = DBAction.getInstance().getConnection();
+//						PreparedStatement pstmt = null;
+						Statement stmt = null;
+						String sql="update account set balance="+balance+" where accountnum="+"'"+accountNum+"'";
+						try {
+							stmt=conn.createStatement();
+							stmt.executeUpdate(sql);
+						} 
+						catch (Exception e3) {
+							System.out.println("bankDaoImpl deposit -?>");
+							e3.printStackTrace();
+						} finally {
+							try {
+								if (stmt != null)stmt.close();
+							//	if (conn != null)conn.close();
+							} catch (Exception e2) {
+								System.out.println("bankDaoImpl deposit -?>");
+								e2.printStackTrace();
+							}
+						}//finally
+						System.out.println("|          *이체완료 *          ");
+						System.out.println("| "+money+"원이 "+acc.getId()+"님의 계좌로 이체되었습니다. ");
+						
+					
+					}else if(deposit>balance || deposit<0){
+						try {
+							throw new initDepositAmountException(
+									
+									"| "+"0원 이상의 금액을 입력해 주세요");
+						} catch (Exception e2) {
+							System.out.println(e2.getMessage());
+						}				
+					}
+				} catch (Exception e) {
+					System.out.println("오류");
+				}
+					
+			
+			break;
+			}else {
+				System.out.println("옳바른 계좌정보를 입력해 주세요");
+				break;
+			}
+		}
+		
+		return true;
+
+
+	}//예금 끝
+
+	@Override
+	public boolean withDrawRun(String fromAccountNum, int money) {//출금
+
+		String accountNum = fromAccountNum ;
+		boolean check = true;
+		String id = user.getId();
+		Account acc =  bd.selectRemittanceAccount(accountNum);
+		int balance = acc.getBalance();
+		while(check) {
+	
+			if(acc.getAccountNum() != null) {
+				System.out.println("현재 잔고는 "+balance+"원 입니다.");
+				
+				try {
+					
+					if(money<=balance) {
+						balance -= money;
+						System.out.println("balance -= money -> "+balance);
+						Connection conn = DBAction.getInstance().getConnection();
+//						PreparedStatement pstmt = null;
+						Statement stmt = null;
+						String sql="update account set balance="+balance+" where accountnum="+"'"+accountNum+"'";
+						try {
+							stmt=conn.createStatement();
+							stmt.executeUpdate(sql);
+						} 
+						catch (Exception e3) {
+							System.out.println("bankDaoImpl withDrawRun -?>");
+							e3.printStackTrace();
+						} finally {
+							try {
+								if (stmt != null)stmt.close();
+							//	if (conn != null)conn.close();
+							} catch (Exception e2) {
+								System.out.println("bankDaoImpl withDrawRun -?>");
+								e2.printStackTrace();
+							}
+						}//finally
+						
+						break;
+					}
+				} catch (Exception e) {
+					
+						
+				}
+					}else if(money>balance ){
+						System.out.println("|잔액이 부족합니다.");
+						
+						try {
+							throw new initDepositAmountException(
+									
+									"| "+"잔액이 부족합니다 ");
+						} catch (Exception e2) {
+							System.out.println(e2.getMessage());
+							break;
+						}				
+					}else if (money<0) {
+						try {
+							throw new initDepositAmountException(
+									
+									"| "+"0원 이상의 숫자를 입력해주세요.");
+						} catch (Exception e2) {
+							System.out.println(e2.getMessage());
+						}				
+						break;
+					}
+					else {
+						System.out.println("옳바른 계좌정보를 입력해 주세요");
+						break;
+					}
+			
+			
+		}
+		
+		return true;
+		///////////////////////
+		
+
+	}//출금 끝
+	
+	
+	
+	//	@Override
+//	public Account accountCheck(String id) {//계좌 유무 확인 -> if문으로 로직을 바꿔서 사용안하는 메서드
+//		for(Account accountChk : accounts) {
+//			if(accountChk.getId().equals(id)) {
+//				return accountChk;
+//			}
+//		}
+//		return null;
+//	}
+
 
 	
 	
 
-}
+}//end of class
