@@ -2,7 +2,7 @@ package app;
 
 import java.util.Date;
 
-public class Account {
+public class Account {//계좌정보
 //
 	private  String id;			//유저id
 	private  String accountNum;	//계좌번호

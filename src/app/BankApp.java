@@ -57,10 +57,29 @@ public class BankApp extends JFrame implements ActionListener {
 
 		boolean mainMenu = true; //질문하는 반복문 (로그인 화면)
 		while(mainMenu) {
-			
+			System.out.println(". ˚\r\n"
+					+ "*  * 　　　 ⊹  ˚  .    　　.\r\n"
+					+ "⊹  ·  ✧ 　　　*    *\r\n"
+					+ ". 　　  ⊹  ✦  　 ✵  　　　　　*\r\n"
+					+ "* .　  ·\r\n"
+					+ ". 　 　  *\r\n"
+					+ "");
+			System.out.println("\r\n"
+					+ "___  ___ _        ______                _    \r\n"
+					+ "|  \\/  |(_)       | ___ \\              | |   \r\n"
+					+ "| .  . | _  _ __  | |_/ /  __ _  _ __  | | __\r\n"
+					+ "| |\\/| || || '_ \\ | ___ \\ / _` || '_ \\ | |/ /\r\n"
+					+ "| |  | || || | | || |_/ /| (_| || | | ||   < \r\n"
+					+ "\\_|  |_/|_||_| |_|\\____/  \\__,_||_| |_||_|\\_\\\r\n"
+					+ "                                             \r\n"
+					+ "                                             \r\n"
+					+ "");
+			System.out.println("|         ++민뱅크에 오신걸 환영합니다++       |");
+			System.out.println("|========================================|");
 			System.out.println("| 1: 로그인 | 2:회원가입 | 3: 관리자 | 4: 종료 |");
+			System.out.println("|                                        |");
 		//	System.out.println("| 1: 로그인 | 2:회원가입 | 3: 관리자 | 4: 아이디/비밀번호찾기 | 5: 종료 |");//할 수 있으면 아이디 비밀번호 찾기
-			System.out.print("선택>>");
+			System.out.print("| 선택>>");
 			
 			Scanner sc = new Scanner(System.in);
 			char selectNo=sc.next().charAt(0);//입력받은 값 //try에 넣으면 무한 반복
@@ -97,16 +116,37 @@ public class BankApp extends JFrame implements ActionListener {
 			//	else if((int)selectNo == 52) { //아이디,비밀번호찾기
 				//	bd.idPwFind(); }
 				else if((int)selectNo == 52) { //종료
-					System.out.println("|           ++은행시스템을 종료합니다++           |");
+					
+
+					System.out.println(". ˚\r\n"
+							+ "*  * 　　　 ⊹  ˚  .    　　.\r\n"
+							+ "⊹  ·  ✧ 　　　*    *\r\n"
+							+ ". 　　  ⊹  ✦  　 ✵  　　　　　*\r\n"
+							+ "* .　  ·\r\n"
+							+ ". 　 　  *\r\n"
+							+ "");
+					System.out.println("\r\n"
+							+ "___  ___ _        ______                _    \r\n"
+							+ "|  \\/  |(_)       | ___ \\              | |   \r\n"
+							+ "| .  . | _  _ __  | |_/ /  __ _  _ __  | | __\r\n"
+							+ "| |\\/| || || '_ \\ | ___ \\ / _` || '_ \\ | |/ /\r\n"
+							+ "| |  | || || | | || |_/ /| (_| || | | ||   < \r\n"
+							+ "\\_|  |_/|_||_| |_|\\____/  \\__,_||_| |_||_|\\_\\\r\n"
+							+ "                                             \r\n"
+							+ "                                             \r\n"
+							+ ""
+							);
+					System.out.println("|         ++은행시스템을 종료합니다++         |");
+
 					break;
 				}
 				else {
-					System.out.println("원하시는 메뉴의 숫자를 입력해주세요.");
+					System.out.println("| 원하시는 메뉴의 숫자를 입력해주세요.");
 				//	System.out.println((int)selectNo);
 				}
 			} catch (InputMismatchException e) { // 작동안함 why
 				
-				System.out.println("원하시는 메뉴의 숫자만 입력해주세요.");
+				System.out.println("| 원하시는 메뉴의 숫자만 입력해주세요.");
 				System.out.println("e.getMessage() -> "+e.getMessage());
 				e.printStackTrace();
 
@@ -126,8 +166,29 @@ public class BankApp extends JFrame implements ActionListener {
 		while(bankMenu) {
 
 			Scanner sc = new Scanner(System.in);
-			System.out.println("| 1: 계좌개설 | 2: 예금 | 3:출금  | 4:잔액조회 | 5: 계좌목록 | 6: 계좌해지 | 7: 송금 | 8: 로그아웃 | 9: 종료 |" );//반복문에 넣을것
-			System.out.print("선택>  ");
+			System.out.println(". ˚\r\n"
+					+ "*  * 　　　 ⊹  ˚  .    　　.\r\n"
+					+ "⊹  ·  ✧ 　　　*    *\r\n"
+					+ ". 　　  ⊹  ✦  　 ✵  　　　　　*\r\n"
+					+ "* .　  ·\r\n"
+					+ ". 　 　  *\r\n"
+					+ "");
+			System.out.println("\r\n"
+					+ "___  ___ _        ______                _    \r\n"
+					+ "|  \\/  |(_)       | ___ \\              | |   \r\n"
+					+ "| .  . | _  _ __  | |_/ /  __ _  _ __  | | __\r\n"
+					+ "| |\\/| || || '_ \\ | ___ \\ / _` || '_ \\ | |/ /\r\n"
+					+ "| |  | || || | | || |_/ /| (_| || | | ||   < \r\n"
+					+ "\\_|  |_/|_||_| |_|\\____/  \\__,_||_| |_||_|\\_\\\r\n"
+					+ "                                             \r\n"
+					+ "                                             \r\n"
+					+ ""
+					);
+			System.out.println("|========================================================================================|");
+			System.out.println("| 1: 계좌개설 | 2: 예금 | 3:출금  | 4:잔액조회 | 5: 계좌목록 | 6: 계좌해지 | 7: 계좌이체 | 8: 로그아웃 |" );//반복문에 넣을것
+//			System.out.println("| 1: 계좌개설 | 2: 예금 | 3:출금  | 4:잔액조회 | 5: 계좌목록 | 6: 계좌해지 | 7: 송금 | 8: 로그아웃 | 9: 종료 |" );//보안상 로그아웃하고 종료하는게 맞는듯
+			System.out.print("| 선택>>");
+
 			int choice=sc.nextInt();//입력받은 값
 		
 			switch (choice) {	
@@ -152,12 +213,17 @@ public class BankApp extends JFrame implements ActionListener {
 				case 7 ://송금
 					bd.remittance();
 					break;
-				case 9://종료
-					System.out.println("|------이용해주셔서 감사합니다------|");
+				case 8://로그아웃
+					System.out.println("|         ++이용해주셔서 감사합니다++         |");
+					System.out.println();
 					bankMenu = false;
 					break;
+//				case 9://종료
+//					System.out.println("|------이용해주셔서 감사합니다------|");
+//					bankMenu = false;
+//					break;
 				default:
-					System.out.println("화면의 숫자만 입력해주세요.");
+					System.out.println("|            화면의 숫자만 입력해주세요.          |");
 				}
 		}//bankMenu while 끝
 			
@@ -170,7 +236,25 @@ public class BankApp extends JFrame implements ActionListener {
 		while(adminBankMenu) {
 
 			Scanner sc = new Scanner(System.in);
-			System.out.println("| 1: 사용자목록 | 2: 회원 탈퇴 | 3: 로그아웃 | 4: 종료 |" );//반복문에 넣을것
+			System.out.println(". ˚\r\n"
+					+ "*  * 　　　 ⊹  ˚  .    　　.\r\n"
+					+ "⊹  ·  ✧ 　　　*    *\r\n"
+					+ ". 　　  ⊹  ✦  　 ✵  　　　　　*\r\n"
+					+ "* .　  ·\r\n"
+					+ ". 　 　  *\r\n"
+					+ "");
+			System.out.println("\r\n"
+					+ "___  ___ _        ______                _    \r\n"
+					+ "|  \\/  |(_)       | ___ \\              | |   \r\n"
+					+ "| .  . | _  _ __  | |_/ /  __ _  _ __  | | __\r\n"
+					+ "| |\\/| || || '_ \\ | ___ \\ / _` || '_ \\ | |/ /\r\n"
+					+ "| |  | || || | | || |_/ /| (_| || | | ||   < \r\n"
+					+ "\\_|  |_/|_||_| |_|\\____/  \\__,_||_| |_||_|\\_\\\r\n"
+					+ "                                             \r\n"
+					+ "                                             \r\n"
+					+ ""
+					);
+			System.out.println("| 1: 사용자목록 | 2: 회원 삭제 | 3: 로그아웃 | 4: 종료 |" );//반복문에 넣을것
 			System.out.print("선택>  ");
 			int choice=sc.nextInt();//입력받은 값
 		
@@ -180,29 +264,53 @@ public class BankApp extends JFrame implements ActionListener {
 					//계좌목록을 부를 때 파일에 저장(근데 값 추가가 아니라 업데이트,파일에서 목록읽어오기)
 					break;
 				case 2:
-					System.out.println("------회원 탈퇴-----");
 					bd.userDelete();
 					break;
 				case 3:
-					System.out.println("------로그아웃------");
+					System.out.println("|========================================|");
+					System.out.println("|                ✧로그아웃✧                ");
+					System.out.println("|========================================|");
 					adminBankMenu = false;
 					bankApp.mainMenu();
 					break;
 				case 4:
-					System.out.println("시스템을 종료합니다.");
+					System.out.println(". ˚\r\n"
+							+ "*  * 　　　 ⊹  ˚  .    　　.\r\n"
+							+ "⊹  ·  ✧ 　　　*    *\r\n"
+							+ ". 　　  ⊹  ✦  　 ✵  　　　　　*\r\n"
+							+ "* .　  ·\r\n"
+							+ ". 　 　  *\r\n"
+							+ "");
+					System.out.println("\r\n"
+							+ "___  ___ _        ______                _    \r\n"
+							+ "|  \\/  |(_)       | ___ \\              | |   \r\n"
+							+ "| .  . | _  _ __  | |_/ /  __ _  _ __  | | __\r\n"
+							+ "| |\\/| || || '_ \\ | ___ \\ / _` || '_ \\ | |/ /\r\n"
+							+ "| |  | || || | | || |_/ /| (_| || | | ||   < \r\n"
+							+ "\\_|  |_/|_||_| |_|\\____/  \\__,_||_| |_||_|\\_\\\r\n"
+							+ "                                             \r\n"
+							+ "                                             \r\n"
+							+ ""
+							);
+					System.out.println("|========================================|");
+					System.out.println("|           ++시스템을 종료합니다++          ");
+					System.out.println("|========================================|");
 					adminBankMenu = false;
 					break;
 				default:
-					System.out.println("화면의 숫자만 입력해주세요.");
+					System.out.println("");
+					System.out.println("| 화면의 숫자만 입력해주세요.");
+					System.out.println("");
 				}
 		}//run2 끝
 	}
 	public static void main(String[] args) throws initDepositAmountException, IOException {
 		// main 여기서 실행(spring boot로 치자면 view와 controller)
 		/* System.out.println("main에 들어오나"); */
-		
+	
 		BankApp bankApp = new BankApp();
 		bankApp.mainMenu();//메인 메뉴 스타트?
+			
 
 
 		

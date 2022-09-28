@@ -2,7 +2,7 @@ package app;
 //
 import java.util.Date;
 
-public class User {
+public class User {// 사용자정보
 
 //은행-> 유저정보 어떤게 필요한가
 	private  String id;		//유저 아이디 ->pk로 가야할듯 길이 유효성검사
