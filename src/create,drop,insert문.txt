@@ -1,0 +1,25 @@
+DROP TABLE account; 
+DROP TABLE user;	
+
+
+Create table user( #사용자정보테이블
+id varchar(50) primary key not null comment'아이디',
+pw varchar(50)  not null comment'암호',
+name varchar(50)  not null comment'이름',
+joindate date not null comment'가입일',
+status int(5)  not null comment'속성');
+
+Create table account( #계좌정보테이블
+id varchar(50)    not null comment'아이디',
+accountnum varchar(60)  not null comment'계좌번호',
+accountPw varchar(60)  not null comment'계좌비밀번호',
+balance int(200)  not null comment'잔금',
+opendate date not null comment'생성일',
+FOREIGN KEY(id)REFERENCES user (id));
+
+
+INSERT INTO `bankapp`.`user` (`id`, `pw`, `name`, `joindate`, `status`) VALUES ('nana', '123', '나나', '2022-09-28', '1');
+INSERT INTO `bankapp`.`user` (`id`, `pw`, `name`, `joindate`, `status`) VALUES ('bank', '11', '은행이', '2022-09-29', '1');
+
+INSERT INTO `bankapp`.`account` (`id`, `accountnum`, `accountPw`, `balance`, `opendate`) VALUES ('nana', '10-4082-967197', '12', 25000, '2022-09-28');
+INSERT INTO `bankapp`.`account` (`id`, `accountnum`, `accountPw`, `balance`, `opendate`) VALUES ('bank', '10-49143-973822', '11', 10000, '2022-09-29');
