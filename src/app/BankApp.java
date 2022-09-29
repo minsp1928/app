@@ -75,7 +75,7 @@ public class BankApp extends JFrame implements ActionListener {
 					+ "                                             \r\n"
 					+ "");
 			System.out.println("|         ++민뱅크에 오신걸 환영합니다++       |");
-			System.out.println("|========================================|");
+			System.out.println("|===========∘₊✧───₊∘메인메뉴∘₊───✧₊∘∘==========|");
 			System.out.println("| 1: 로그인 | 2:회원가입 | 3: 관리자 | 4: 종료 |");
 			System.out.println("|                                        |");
 		//	System.out.println("| 1: 로그인 | 2:회원가입 | 3: 관리자 | 4: 아이디/비밀번호찾기 | 5: 종료 |");//할 수 있으면 아이디 비밀번호 찾기
@@ -147,8 +147,9 @@ public class BankApp extends JFrame implements ActionListener {
 			} catch (InputMismatchException e) { // 작동안함 why
 				
 				System.out.println("| 원하시는 메뉴의 숫자만 입력해주세요.");
-				System.out.println("e.getMessage() -> "+e.getMessage());
-				e.printStackTrace();
+				continue;
+				//System.out.println("e.getMessage() -> "+e.getMessage());
+				//e.printStackTrace();
 
 			}
 	
@@ -184,7 +185,7 @@ public class BankApp extends JFrame implements ActionListener {
 					+ "                                             \r\n"
 					+ ""
 					);
-			System.out.println("|========================================================================================|");
+			System.out.println("|===================================∘₊✧───₊∘뱅크메뉴∘₊───✧₊∘∘==================================|");
 			System.out.println("| 1: 계좌개설 | 2: 예금 | 3:출금  | 4:잔액조회 | 5: 계좌목록 | 6: 계좌해지 | 7: 계좌이체 | 8: 로그아웃 |" );//반복문에 넣을것
 //			System.out.println("| 1: 계좌개설 | 2: 예금 | 3:출금  | 4:잔액조회 | 5: 계좌목록 | 6: 계좌해지 | 7: 송금 | 8: 로그아웃 | 9: 종료 |" );//보안상 로그아웃하고 종료하는게 맞는듯
 			System.out.print("| 선택>>");
@@ -254,6 +255,7 @@ public class BankApp extends JFrame implements ActionListener {
 					+ "                                             \r\n"
 					+ ""
 					);
+			System.out.println("|==============∘₊✧───₊∘관리자메뉴∘₊───✧₊∘∘============|");
 			System.out.println("| 1: 사용자목록 | 2: 회원 삭제 | 3: 로그아웃 | 4: 종료 |" );//반복문에 넣을것
 			System.out.print("선택>  ");
 			int choice=sc.nextInt();//입력받은 값
